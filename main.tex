@@ -48,11 +48,11 @@ University Of Southern California, Los Angeles, CA 900089, USA.}
 %Are the conclusions about the tool and its performance adequately supported by the findings presented in the article?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+NCBI’s Sequence Read Archive (SRA) is the primary archive of next-generation sequencing datasets.  However, methods to programmatically access this data are limited and not intuitive. We introduce a Python package ‘pysradb’ package that provides a collection of simple command line methods to query and download metadata and data from SRA. It utilizes the curated metadata database available through the SRAdb project. We demonstrate the utility of pysradb for different use cases.
+
 NCBI's Sequence Read Archive (SRA) is the primary archive of next-generation
-sequencing datasets. SRA makes metadata and raw sequencing data available to the
-research community to encourage reproducibility besides open avenues for testing
-novel hypotheses on publicly available data. However, methods to programmatically
-access this data are limited and not intuitive. We introduce \texttt{pysradb} package that provides a collection of simple command line methods to query and download metadata and data from SRA. It utilizes the curated metadata database available through the SRAdb project. We demonstrate the utility of \texttt{pysradb} for different use cases.
+sequencing datasets.
+SRA makes metadata and raw sequencing data available to the research community to encourage reproducibility, and to provide besides open avenues for testing novel hypotheses on publicly available data. However, methods to programmatically access this data are limited and not intuitive. We introduce a Python package \texttt{pysradb} that provides a collection of simple command line methods to query and download metadata and data from SRA. It utilizes the curated metadata database available through the SRAdb project. We demonstrate the utility of \texttt{pysradb} for different use cases.
 
 %Abstracts should be up to 300 words and provide a succinct summary of the article. Although the abstract should explain why the article might be interesting, care should be taken not to inappropriately over-emphasise the importance of the work described in the article. Citations should not be used in the abstract, and the use of abbreviations should be minimized.
 
@@ -77,7 +77,8 @@ by querying the website or through the Entrez command line utility \cite{kans201
 
 
 In order to make querying both metadata and data more precise and robust, SRAdb
-\cite{zhu2013sradb} project provides a frequently updated SQLite database containing all the metadata parsed from SRA. \texttt{SRAdb} tracks the five main data objects in SRA's metadata: submission, study, sample, experiment and run. These are mapped to five different relational database tables that are made available in the SQLite file. SRAdb makes no attempts to either curate or clean up the metadata in any way. The metadata semantics remain same as they are in SRA with minor changes in the field names to imrove usability of SQL queries. The accompanying package made available in the R programming language, also called \texttt{SRAdb} \cite{zhudavissradb},
+\cite{zhu2013sradb} project provides a frequently updated SQLite database containing all the metadata parsed from SRA. \texttt{SRAdb} tracks the five main data objects in SRA's metadata: submission, study, sample, experiment and run. These are mapped to five different relational database tables that are made available in the SQLite file.
+SRAdb's metadata semantics remain as they are in SRA with minor changes in the field names to improve usability of SQL queries. The accompanying package made available in the R programming language, also called \texttt{SRAdb} \cite{zhudavissradb},
 provides a convenient framework to handle metadata query and raw data downloads by 
 utilizing the SQLite dabase. Though powerful, SRAdb's interface still requires the end user to be familiar with the R programming language. 
 
@@ -85,8 +86,8 @@ utilizing the SQLite dabase. Though powerful, SRAdb's interface still requires t
 \texttt{pysradb} package builds up on the principles of \texttt{SRAdb} and 
 provides a simple and intuitive interface for querying metadata and downloading
 datasets from SRA through command line utility. It obviates the need for the
-user to be famililar with any programming language as far as querying and downloading sequencing datasets is concerned. Additionally, it provides utility functions that will further help the user perform more granular queries, that
-are often required while datasets at large scale.
+user to be familiar with any programming language as far as querying and downloading sequencing datasets is concerned. Additionally, it provides utility functions that will further help the user perform more granular queries, that
+are often required with datasets at large scale.
 
 
 
