@@ -48,11 +48,7 @@ University Of Southern California, Los Angeles, CA 900089, USA.}
 %Are the conclusions about the tool and its performance adequately supported by the findings presented in the article?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-NCBI’s Sequence Read Archive (SRA) is the primary archive of next-generation sequencing datasets.  However, methods to programmatically access this data are limited and not intuitive. We introduce a Python package ‘pysradb’ package that provides a collection of simple command line methods to query and download metadata and data from SRA. It utilizes the curated metadata database available through the SRAdb project. We demonstrate the utility of pysradb for different use cases.
-
-NCBI's Sequence Read Archive (SRA) is the primary archive of next-generation
-sequencing datasets.
-SRA makes metadata and raw sequencing data available to the research community to encourage reproducibility, and to provide besides open avenues for testing novel hypotheses on publicly available data. However, methods to programmatically access this data are limited and not intuitive. We introduce a Python package \texttt{pysradb} that provides a collection of simple command line methods to query and download metadata and data from SRA. It utilizes the curated metadata database available through the SRAdb project. We demonstrate the utility of \texttt{pysradb} for different use cases.
+NCBI’s Sequence Read Archive (SRA) is the primary archive of next-generation sequencing datasets. SRA makes metadata and raw sequencing data available to the research community to encourage reproducibility, and to provide avenues for testing novel hypotheses on publicly available data. However, methods to programmatically access this data are limited and not intuitive. We introduce a Python package \texttt{pysradb} that provides a collection of simple command line methods to query and download metadata and data from SRA. It utilizes the curated metadata database available through the SRAdb project. We demonstrate the utility of pysradb for different use cases. %\texttt{pysradb} streamlines the process of retriving data and metadata
 
 %Abstracts should be up to 300 words and provide a succinct summary of the article. Although the abstract should explain why the article might be interesting, care should be taken not to inappropriately over-emphasise the importance of the work described in the article. Citations should not be used in the abstract, and the use of abbreviations should be minimized.
 
@@ -68,12 +64,14 @@ bioinformatics, SRA, NGS, NCBI, metadata, GEO, python
 \pagestyle{main}
 \section*{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Several projects have made efforts to analyze and publish summaries of DNA-sequencing \cite{macarthur2012systematic} and RNA-sequencing \cite{lachmann2018massive, collado2017reproducible} datasets. Obtaining metadata and raw data from NCBI's Sequencing Read Archive (SRA)
-\cite{leinonen2010sequence} are often the first steps towards re-analyzing public
-next-generation sequencing datasets to compare them to private data or test a 
-novel hypothesis. NCBI's SRA toolkit \cite{ncbisratoolit} provides utility methods
-to download raw sequencing data, while the metadata can be obtained 
-by querying the website or through the Entrez command line utility \cite{kans2018entrez}.
+Several projects have made efforts to analyze and publish summaries of DNA-
+sequencing \cite{macarthur2012systematic} and RNA-sequencing
+\cite{lachmann2018massive, collado2017reproducible} datasets. Obtaining metadata
+and raw data from NCBI's Sequencing Read Archive (SRA) \cite{leinonen2010sequence}
+are often the first steps towards re-analyzing public next-generation sequencing datasets to compare them to private data or test a novel hypothesis. NCBI's SRA toolkit \cite{ncbisratoolit}
+provides utility methods to download raw sequencing data, while the metadata can
+be obtained by querying the website or through the Entrez command line utility 
+\cite{kans2018entrez}.
 
 
 In order to make querying both metadata and data more precise and robust, SRAdb
@@ -107,30 +105,14 @@ information from Gene Expression Omnibus (GEO)
  \cite{edgar2002gene,barrett2012ncbi} through the SQLite database made available 
 through the GEOmetadb project \cite{zhu2008geometadb}.
 
+\texttt{pysradb} can be run on either Linux or Mac based operating systems. It is 
+implemented in Python programming language, has minimal dependencies and can be easily installed using either \texttt{pip} or \texttt{conda} based package manager visa the \texttt{bioconda} \cite{gruning2018bioconda} channel. It works both in Python 2 and Python 3 environments.
 %For software tool papers, this section should address how the tool works and any relevant technical details required for implementation of the tool by other developers.  
 
 \subsection*{Operation}
 %This part of the methods should include the minimal system requirements needed to run the software and an overview of the workflow for the tool for users of the tool.
 
-\texttt{pysradb} can be run on either Linux or Mac based operating systems. It is 
-implemented in Python programming language, has minimal dependecies and can be easily installed using either \texttt{pip} or \texttt{conda} based package manager visa the \texttt{bioconda} \cite{gruning2018bioconda} channel. It works both in Python 2 and Python 3 enviroments.
-
-\begin{comment}
-
-
-\section*{Results} % Optional - only if novel data or analyses are included
-This section is only required if the paper includes novel data or analyses, and should be written as a traditional results section.
-\end{comment}
-
-\section*{Use Cases} % Optional - only if NO new datasets are included
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-The primary use case of \texttt{pysradb} is in automated download of an entire
-SRA project. NCBI's sratoolkit \cite{ncbisratoolit}
-This section is required if the paper does not include novel data or analyses. 
-Examples of input and output files should be provided with some explanatory context.  Any novel or complex variable parameters should also be explained in sufficient detail to allow users to understand and use the tool's functionality.
-
-
-\textbf{Step 1: }
+\texttt{pysradb} uses SQLite file produced and made available by SRAdb \cite{zhu2013sradb} project. The file itself can be downloaded using \texttt{pysradb} as:
 
 \begin{allintypewriter}
 \$ pysradb srametadb
@@ -152,6 +134,19 @@ Metadata associated with data/SRAmetadb.sqlite:
 1  creation timestamp  2018-12-07 00:39:29
 
 \end{allintypewriter}
+
+SRAmetadb.sqlite file is required for all other operations supported
+by \texttt{pysradb}.
+
+
+\section*{Use Cases} % Optional - only if NO new datasets are included
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The primary use case of \texttt{pysradb} is in automated download of an entire SRA project. NCBI's sratoolkit \cite{ncbisratoolit} allows
+downloading fetching raw data per sequencing run. Each SRA project (SRP) consists of one or multiple experiments (SRX) which are sequenced as one or multiple runs (SRR). \texttt{sratoolkit} allows downloading 
+
+
+\textbf{Step 1: }
+
 
 \textbf{Step 2:}
 
