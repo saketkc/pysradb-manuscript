@@ -1,4 +1,9 @@
 \documentclass[9pt,a4paper]{extarticle}
+\usepackage[T1]{fontenc}
+\usepackage{tabto}
+\usepackage{float}
+\catcode`\_=12
+
 \usepackage{f1000_styles}
 \usepackage{verbatim}
 %% Default: numerical citations
@@ -180,10 +185,71 @@ experiments (SRX) which are sequenced as one or multiple runs (SRR).
 \texttt{sratoolkit} allows downloading 
 
 
-\textbf{Step 1: }
+\subsection*{Getting a list of GEO experiments for a GEO study}
+Any GEO study (GSE) will involve a collection of experiments (GSM). We can obtain
+an entire list of experiments corresponding to the study using the
+\texttt{gse-to-gsm} subcommand from \texttt{pysradb}:
 
+\begin{allintypewriter}
+\$ pysradb gse-to-gsm GSE41637 | head\\
+\begin{table}[H]
+    \begin{tabular}{cc}
+        study_alias & experiment_alias\\
+        GSE41637  &  GSM1020640_1\\
+        GSE41637  &  GSM1020641_1\\
+        GSE41637  &  GSM1020642_1\\
+        GSE41637  &  GSM1020643_1\\
+        GSE41637  &  GSM1020644_1\\
+        GSE41637  &  GSM1020645_1\\
+        GSE41637  &  GSM1020646_1\\
+        GSE41637  &  GSM1020647_1\\
+        GSE41637  &  GSM1020648_1\\ 
+    \end{tabular}
+\end{table}
 
-\textbf{Step 2:}
+\end{allintypewriter}
+
+However, just a list of GSM id is not useful if one is performing any downstream
+analysis which essentially requires more detailed information about the metadata
+associated with each experiment. This relevant metadata associated with each sample can be obtained by provinding \texttt{gse-to-gsm} additional flags:
+
+\begin{allintypewriter}
+\$ pysradb gse-to-gsm --desc GSE41637 | head\\
+\begin{table}[H]
+    \begin{tabular}{lll}
+        study_alias & experiment_alias & sample_attribute\\
+        GSE41637 & GSM1020640_1 &  source_name: mouse_brain || strain: DBA/2J || tissue: brain\\
+        GSE41637 & GSM1020641_1 &  source_name: mouse_colon || strain: DBA/2J || tissue: colon\\
+        GSE41637 & GSM1020642_1 &  source_name: mouse_heart || strain: DBA/2J || tissue: heart\\
+        GSE41637 & GSM1020643_1 &  source_name: mouse_kidney || strain: DBA/2J || tissue: kidney\\
+        GSE41637 & GSM1020644_1 &  source_name: mouse_liver || strain: DBA/2J || tissue: liver\\
+        GSE41637 & GSM1020645_1 &  source_name: mouse_lung || strain: DBA/2J || tissue: lung\\
+        GSE41637 & GSM1020646_1 &  source_name: mouse_skm || strain: DBA/2J || tissue: skeletal muscle\\
+        GSE41637 & GSM1020647_1 &  source_name: mouse_spleen || strain: DBA/2J || tissue: spleen\\
+        GSE41637 & GSM1020648_1 &  source_name: mouse_testes || strain: DBA/2J || tissue: testes\\
+    \end{tabular}
+\end{table}
+\end{allintypewriter}
+
+The metadata information can then be parsed from the \texttt{sample\_attribute} column.
+To obtain a more strucutred metadata, we can use an additional flag \texttt{--expand}:
+
+\begin{allintypewriter}
+\$ pysradb gse-to-gsm --desc --expand GSE41637 | head\\
+\begin{table}[H]
+    \begin{tabular}{lllll}
+        study_alias & experiment_alias & source_name &  strain & tissue\\
+        GSE41637 & GSM1020640_1 &  mouse_brain &  dba/2j & brain\\
+        GSE41637 & GSM1020641_1 &  mouse_colon &  dba/2j & colon\\
+        GSE41637 & GSM1020642_1 &  mouse_heart &  dba/2j & heart\\
+        GSE41637 & GSM1020643_1 &  mouse_kidney & dba/2j & kidney\\
+        GSE41637 & GSM1020644_1 &  mouse_liver &  dba/2j & liver\\
+        GSE41637 & GSM1020645_1 &  mouse_lungdba/2j & lung\\
+        GSE41637 & GSM1020646_1 &  mouse_skm dba/2j & skeletal muscle\\
+    \end{tabular}
+\end{table}
+\end{allintypewriter}
+
 
 \begin{allintypewriter}
 \$ pysradb sra-metadata --db data/SRAmetadb.sqlite SRP098789 
@@ -236,7 +302,7 @@ metadata can be subset just as you would subset a dataframe in pandas.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Another common operation that we do on SRA is seach, plain text search.
+Another common operation that we do on SRA is search, plain text search.
 
 
 If you want to look up for all projects where `ribosome profiling` appears somewhere
@@ -283,6 +349,9 @@ No competing interests were disclosed.
 The author declared that no grants were involved in supporting this work.
 
 \section*{Acknowledgments}
+%We thank Shweta Ramdas (Universsity of Pennsylvania) for reviewing the earlier drafts.
+%S.C. acknowledges support from USC Provost Graduate Research Fellowship. 
+
 \begin{comment}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 This section should acknowledge anyone who contributed to the research or the
@@ -297,7 +366,26 @@ Please do not list grant funding in this section.
 {\small\bibliographystyle{unsrtnat}
 \bibliography{bibliography}}
 
+\begin{comment}
 
+5. Main Body
+Software Tool Articles typically contain the following sections:
+Introduction
+Methods, providing details of Implementation and Operation
+Results (optional)
+Use Cases (optional)
+Discussion/Conclusions
+The Introduction should provide context as to why the software tool was developed and what need it addresses. It is good scholarly practice to mention previously developed tools that address similar needs, and why the current tool is needed.
+The Methods should include a subsection on Implementation describing how the tool works and any relevant technical details required for implementation; and a subsection on Operation, which should include the minimal system requirements needed to run the software and an overview of the workflow.
+A Results section is only required if the paper includes novel data or analyses, and should be written as a traditional results section.
+Please include a section on Use Cases if the paper does not include novel data or analyses. Examples of input and output files should be provided with some explanatory context. Any novel or complex variable parameters should be explained in sufficient detail to enable users to understand and use the tool's functionality.
+A Discussion (e.g. if the paper includes novel data or analyses) or Conclusions should include a brief discussion of allowances made (if any) for controlling bias or unwanted sources of variability, and the limitations of any novel datasets.
+Reproducibility: F1000Research is committed to serving the research community by ensuring that all articles include sufficient information to allow others to reproduce the work. With this in mind, Methods sections should provide sufficient details of the materials and methods used so that the work can be repeated by others. The section should also include a brief discussion of allowances made (if any) for controlling bias or unwanted sources of variability. Any limitations of the datasets should be discussed.
+When antibodies are used, the species in which the antibody was raised, the manufacturing company or source laboratory, the catalogue or reference number, and whether it is a polyclonal or monoclonal antibody should be included. In addition, if the antibody has been previously validated, a reference to the validation study should be included. If the antibody has not been validated, full details of the dilution and use of the antibody should be given in the Methods section.
+We encourage authors to add Research Resource Identifiers (RRIDs) to their article in order to unambiguously identify the following types of resources: antibodies, genetically modified organisms, software tools, data, databases and services. More information on this project is available from the Resource Identification Initiative and RRIDs can be obtained from the portal.
+Where applicable, we also encourage authors to deposit a step-by-step description of their protocols on protocols.io, where they obtain a persistent digital object identifier (DOI), which can be included in the Methods section of the article, using https://doi.org/10.17504/protocols.io.[PROTOCOL DOI] as the format (e.g. https://doi.org/10.17504/protocols.io.hrkb54w). Authors should note that the protocol is only made public once they select “Publish” on protocols.io.
+
+\end{comment}
 
 % See this guide for more information on BibTeX:
 % http://libguides.mit.edu/content.php?pid=55482&sid=406343
