@@ -28,10 +28,10 @@ and data from NCBI Sequence Read Archive}
 %broadness and claims within the title are appropriate to the content of the
 %article itself.}
 
-\author[]{Saket Choudhary}
+\author[]{Author}%Saket Choudhary}
 \affil[]{Computational Biology and Bioinformatics\\
 University Of Southern California, Los Angeles, CA 900089, USA.}
-\affil[]{email: skchoudh@usc.edu}
+\affil[]{email: }
 
 
 \maketitle
@@ -244,18 +244,106 @@ To obtain a more strucutred metadata, we can use an additional flag \texttt{--ex
         GSE41637 & GSM1020642_1 &  mouse_heart &  dba/2j & heart\\
         GSE41637 & GSM1020643_1 &  mouse_kidney & dba/2j & kidney\\
         GSE41637 & GSM1020644_1 &  mouse_liver &  dba/2j & liver\\
-        GSE41637 & GSM1020645_1 &  mouse_lungdba/2j & lung\\
-        GSE41637 & GSM1020646_1 &  mouse_skm dba/2j & skeletal muscle\\
+        GSE41637 & GSM1020645_1 &  mouse_lung & dba/2j & lung\\
+        GSE41637 & GSM1020646_1 &  mouse_skm & dba/2j & skeletal muscle\\
     \end{tabular}
 \end{table}
 \end{allintypewriter}
 
+%% pysradb sra-metadata --desc --expand SRP109126 | grep 'study_accession\|ribosome protected footprints' | pysradb download
+
+
+\subsection*{Getting SRP from GSE}
+\begin{allintypewriter}
+\$ pysradb gse-to-srp --desc --expand GSE100007
+\begin{table}[H]
+    \begin{tabular}{llllll}
+study_alias & study_accession & cell_type & fraction & molecule & source_name\\                       GSE100007 &  SRP109126   &    human embryonic stem cells (hesc) & cytoplasm                      & cytoplasmic rna               &  human embryonic stem cells (hesc)\\
+GSE100007 &  SRP109126   &    human embryonic stem cells (hesc) & high polysome (5-8+ ribosomes) & polysomal rna                 &  human embryonic stem cells (hesc)\\
+GSE100007 &  SRP109126   &    human embryonic stem cells (hesc) & low polysome (2-4 ribosomes)   & polysomal rna                 &  human embryonic stem cells (hesc)\\
+GSE100007 &  SRP109126   &    human embryonic stem cells (hesc) & monosome (80s)                 & monosomal rna                 &  human embryonic stem cells (hesc)\\
+GSE100007 &  SRP109126   &    human embryonic stem cells (hesc) & nucleus                        & nuclear rna                   &  human embryonic stem cells (hesc)\\
+GSE100007 &  SRP109126   &    human embryonic stem cells (hesc) & ribosome protected footprints  & ribosome protected footprints &  human embryonic stem cells (hesc)\\
+GSE100007 &  SRP109126   &    neural cultures (14 days)         & cytoplasm                      & cytoplasmic rna               &  neural cultures (14 days)\\
+GSE100007 &  SRP109126   &    neural cultures (14 days)         & high polysome (5-8+ ribosomes) & polysomal rna                 &  neural cultures (14 days)\\
+GSE100007 &  SRP109126   &    neural cultures (14 days)         & low polysome (2-4 ribosomes)   & polysomal rna                 &  neural cultures (14 days)\\
+GSE100007 &  SRP109126   &    neural cultures (14 days)         & monosome (80s)                 & monosomal rna                 &  neural cultures (14 days)\\
+GSE100007 &  SRP109126   &    neural cultures (14 days)         & nucleus                        & nuclear rna                   &  neural cultures (14 days)\\
+GSE100007 &  SRP109126   &    neural cultures (14 days)         & ribosome protected footprints  & ribosome protected footprints &  neural cultures (14 days)\\
+GSE100007 &  SRP109126   &    neural cultures (50 days)         & cytoplasm                      & cytoplasmic rna               &  neural cultures (50 days)\\
+GSE100007 &  SRP109126   &    neural cultures (50 days)         & high polysome (5-8+ ribosomes) & polysomal rna                 &  neural cultures (50 days)\\
+GSE100007 &  SRP109126   &    neural cultures (50 days)         & low polysome (2-4 ribosomes)   & polysomal rna                 &  neural cultures (50 days)\\
+GSE100007 &  SRP109126   &    neural cultures (50 days)         & monosome (80s)                 & monosomal rna                 &  neural cultures (50 days)\\
+GSE100007 &  SRP109126   &    neural cultures (50 days)         & nucleus                        & nuclear rna                   &  neural cultures (50 days)\\
+GSE100007 &  SRP109126   &    neural progenitor cells (npc)     & cytoplasm                      & cytoplasmic rna               &  neural progenitor cells (npc)\\
+GSE100007 &  SRP109126   &    neural progenitor cells (npc)     & high polysome (5-8+ ribosomes) & polysomal rna                 &  neural progenitor cells (npc)\\
+GSE100007 &  SRP109126   &    neural progenitor cells (npc)     & low polysome (2-4 ribosomes)   & polysomal rna                 &  neural progenitor cells (npc)\\
+GSE100007 &  SRP109126   &    neural progenitor cells (npc)     & monosome (80s)                 & monosomal rna                 &  neural progenitor cells (npc)\\
+GSE100007 &  SRP109126   &    neural progenitor cells (npc)     & nucleus                        & nuclear rna                   &  neural progenitor cells (npc)\\
+GSE100007 &  SRP109126   &    neural progenitor cells (npc)     & ribosome protected footprints  & ribosome protected footprints &  neural progenitor cells (npc)\\
+    \end{tabular}
+\end{table}
+\end{allintypewriter}
+
+\subsection*{Getting SRPs from GSE}
+\begin{allintypewriter}
+\$ pysradb gse-to-srp GSE24355 GSE25842
+\begin{table}[H]
+    \begin{tabular}{ll}
+    study_alias & study_accession\\
+    GSE24355 & SRP003870\\
+    GSE25842 & SRP005378\\
+    \end{tabular}
+\end{table}
+\end{allintypewriter}
+
+\subsection*{Getting project's metadata}
+\begin{allintypewriter}
+\$ pysradb metadata SRP026005 --assay --desc --expand  | head
+\footnotesize{
+\begin{table}[H]
+    \begin{tabular}{llllllll}
+study_accession & experiment_accession & sample_accession & run_accession & library_strategy & embryonic_stage & source_name &  strain  \\
+SRP026005 &   SRX305245 & SRS444476 & SRR900108 & RNA-Seq &   e9.5 & neural crest cells sorted from embryo culture & c57bl/6\\
+SRP026005 &   SRX305246 & SRS444467 & SRR900109 & RNA-Seq &   e9.5 & neural crest cells sorted from embryo culture & c57bl/6\\
+SRP026005 &   SRX305247 & SRS444468 & SRR900110 & RNA-Seq &   e9.5 & neural crest cells sorted from embryo culture & c57bl/6\\
+SRP026005 &   SRX305247 & SRS444468 & SRR900111 & RNA-Seq &   e9.5 & neural crest cells sorted from embryo culture & c57bl/6\\
+SRP026005 &   SRX305248 & SRS444470 & SRR900112 & RNA-Seq &   e9.5 & neural crest cells sorted from embryo culture & c57bl/6\\
+SRP026005 &   SRX305249 & SRS444471 & SRR900113 & RNA-Seq &   e9.5 & neural crest cells sorted from embryo culture & c57bl/6\\
+SRP026005 &   SRX305250 & SRS444472 & SRR900114 & RNA-Seq &   e9.5 & neural crest cells sorted from embryo culture & c57bl/6\\
+SRP026005 &   SRX305250 & SRS444472 & SRR900115 & RNA-Seq &   e9.5 & neural crest cells sorted from embryo culture & c57bl/6\\
+SRP026005 &   SRX305251 & SRS444473 & SRR900116 & RNA-Seq &   e9.5 & neural crest cells sorted from embryo culture & c57bl/6\\
+\end{tabular}
+\end{table}
+}
+\end{allintypewriter}
+
+\subsection*{Getting assay summary statistics}
 
 \begin{allintypewriter}
-\$ pysradb sra-metadata --db data/SRAmetadb.sqlite SRP098789 
-
-
+\$ pysradb metadata SRP000941 --assay  | tr -s '  ' | cut -f5 -d ' ' | tail -n +2 | sort | uniq -c
+\begin{table}[H]
+    \begin{tabular}{ll}
+        999  & Bisulfite-Seq\\
+        768 & ChIP-Seq\\
+        121 & OTHER\\
+        353 & RNA-Seq\\
+        28 & WGS\\
+    \end{tabular}
+\end{table}
 \end{allintypewriter}
+
+\subsection*{Downloading data}
+
+\begin{allintypewriter}
+\$  pysradb download -p SRP003870 -p SRP005378
+\end{allintypewriter}
+
+
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 The simplest use case of `pysradb` is when you apriopri know the SRA project ID 
@@ -265,7 +353,7 @@ Example: https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{allintypewriter}
-pysradb sra-metadata --db data/SRAmetadb.sqlite SRP098789
+pysradb metadata SRP098789
 \end{allintypewriter}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -281,32 +369,32 @@ be merged.
 
 
 \begin{allintypewriter}
-!pysradb download --db data/SRAmetadb.sqlite SRP063852 
+\$ pysradb download -p SRP063852 
 \end{allintypewriter}
 
 Often, you need to process only a smaller set of samples from a project (SRP).
-Consider this project which has data spanning four assays.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-But, you might be only interested in analyzing the `RNA-seq` samples and would 
-just want to download that subset. This is simple using `pysradb` since the
-metadata can be subset just as you would subset a dataframe in pandas.
+Consider the project SRP000941 which has data spanning four assays. But, we might be 
+only interested in analyzing the `RNA-seq` samples and would just want to download
+that subset. This can be done simply using the following command:
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{allintypewriter}
-!pysradb sra-metadata --db data/SRAmetadb.sqlite  SRP098789 --expand
+\$ pysradb metadata SRP000941 --assay $|$ grep `study$|$RNA-Seq' $|$ pysradb download
 \end{allintypewriter}
 
+\subsection*{Search}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Another common operation that we do on SRA is search, plain text search.
+Another common operation that we do on SRA is search, plain text search. If we want
+to look up for all projects where `ribosome profiling` appears somewhere
+in the description, we can use:
 
+\begin{allintypewriter}
+\$ pysradb search '"ribosome profiling"'
+\end{allintypewriter}
 
-If you want to look up for all projects where `ribosome profiling` appears somewhere
-in the description:
 
 
 \begin{comment}
@@ -322,7 +410,10 @@ include a brief discussion of allowances made (if any) for controlling bias or u
 This section is only required if the paper includes novel data or analyses, and should be written as a traditional conclusion.
 
 \section*{Summary} % Optional - only if NO new datasets are included
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 This section is required if the paper does not include novel data or analyses.  It allows authors to briefly summarize the key points from the article.
+The need to perform metaanalysis warrants need of more stream lined ways to obtain
+data. NCBI provides access to a huge set of datasets across 
 
 
 \end{comment}
@@ -340,7 +431,7 @@ Archived source code at time of publication:
 Software license: BSD-3-Clause
 
 \section*{Author Contributions}
-S.C. designed the project, implemented the package, and wrote the manuscript.
+%S.C. designed the project, implemented the package, and wrote the manuscript.
 
 \section*{Competing interests}
 No competing interests were disclosed.
