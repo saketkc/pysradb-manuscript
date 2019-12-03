@@ -2,7 +2,13 @@
 \usepackage[T1]{fontenc}
 \usepackage{tabto}
 \usepackage{float}
+\usepackage[colorlinks = true,
+            linkcolor = Orange,
+            urlcolor  = Orange,
+            citecolor = Orange,
+            anchorcolor = Orange]{hyperref}
 \catcode`\_=12
+
 
 \usepackage{f1000_styles}
 \usepackage{verbatim}
@@ -30,7 +36,7 @@ and data from NCBI Sequence Read Archive}
 
 \author[]{Saket Choudhary}
 \affil[]{Computational Biology and Bioinformatics\\
-University Of Southern California, Los Angeles, CA 900089, USA.}
+University of Southern California, Los Angeles, CA 90089, USA.}
 \affil[]{email: skchoudh@usc.edu}
 
 
@@ -58,7 +64,7 @@ programmatically access this data are limited. We introduce a
 Python package \texttt{pysradb} that provides a collection of  command
 line methods to query and download metadata and data from SRA utilizing the
 curated metadata database available through the SRAdb project. We demonstrate 
-the utility of pysradb for searching and downloading SRA datasets.
+the utility of pysradb on multiple use cases for searching and downloading SRA datasets.
 %\texttt{pysradb} streamlines the process of retriving data and metadata
 
 %Abstracts should be up to 300 words and provide a succinct summary of the
@@ -70,7 +76,7 @@ the utility of pysradb for searching and downloading SRA datasets.
 \end{abstract}
 
 \section*{Keywords}
-bioinformatics, SRA, NGS, NCBI, metadata, GEO, Python
+bioinformatics, metadata, SRA, NGS, NCBI, GEO
 %Please list up to eight keywords to help readers interested in your article find it more easily.
 
 
@@ -79,6 +85,7 @@ bioinformatics, SRA, NGS, NCBI, metadata, GEO, Python
 \pagestyle{main}
 \section*{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+~\\
 Several projects have made efforts to analyze and publish summaries of DNA-seq \cite{macarthur2012systematic} and RNA-seq
 \cite{lachmann2018massive, collado2017reproducible} datasets. Obtaining metadata
 and raw data from NCBI's Sequencing Read Archive (SRA) \cite{leinonen2010sequence}
@@ -88,32 +95,26 @@ toolkit \cite{ncbisratoolit} provides utility methods to download raw sequencing
 data, while the metadata can be obtained by querying the website or through the
 Entrez \texttt{efetch} command line utility \cite{kans2018entrez}. Most workflows analyzing
 public data rely on first searching for relevant keywords in the metadata either
-through the command line utility or the website and then downloading these. A
-more streamlined workflow can enable doing both these steps at once.
+through the command line utility or the website, gathering relevant sample (s) of interest and then downloading these. A
+more streamlined workflow can enable performing all these steps at once.
+~\\
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% MORE?
-% Reorganize implementation
-% developed and maintained
 In order to make querying both metadata and data more precise and robust, SRAdb
 \cite{zhu2013sradb} project provides a frequently updated SQLite database 
 containing all the metadata parsed from SRA. \texttt{SRAdb} tracks the five main
 data objects in SRA's metadata: submission, study, sample, experiment and run.
 These are mapped to five different relational database tables that are made
 available in the SQLite file. The metadata semantics in the file remain as they are on
-SRA.
-%SRAdb's metadata semantics remain as they are in SRA with minor changes in the field names to improve the usability of SQL queries. 
-The accompanying package \texttt{SRAdb} \cite{zhudavissradb} made available in the R programming language \cite{rprog}
+SRA. The accompanying package \texttt{SRAdb} \cite{zhudavissradb} made available in the R programming language \cite{rprog}
 provides a convenient framework to handle metadata query and raw data downloads by utilizing the SQLite database. 
 Though powerful, SRAdb requires the end user to be familiar 
 with the R programming language and does not provide a command-line interface for
 querying or downloading operations.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+~\\
 
-
-\texttt{pysradb} package builds upon the principles of \texttt{SRAdb} and 
-provides a simple and user-friendly command-line interface for querying metadata and downloading
+\texttt{pysradb} package builds upon the principles of \texttt{SRAdb} 
+providing a simple and user-friendly command-line interface for querying metadata and downloading
 datasets from SRA. It obviates the need for the
 user to be familiar with any programming language for querying and
 downloading datasets from SRA. Additionally, it provides utility 
@@ -121,17 +122,18 @@ functions that will further help a user perform more granular queries, that
 are often required when dealing with multiple datasets at large scale. By enabling both metadata
 search and download operations at the command-line, \texttt{pysradb} aims to bridge the gap in
 seamlessly retrieving public sequencing datasets and the associated metadata.
+~\\
 
 \texttt{pysradb} is written in Python (Python Software Foundation, 
 https://www.python.org/) \cite{vanRossum:2011:PLR:2011965} and is currently developed
 on Github under the open-source BSD 3-Clause License. In order to simplify the installation
-procedure for the end-user, it is also available for download through PyPI (https://pypi.org/project/pysradb/)
-and bioconda \cite{gruning2018bioconda} (https://bioconda.github.io/recipes/pysradb/README.html)
-
+procedure for the end-user, it is also available for download through PyPI (\url{https://pypi.org/project/pysradb})
+and bioconda \cite{gruning2018bioconda} (\url{https://bioconda.github.io/recipes/pysradb/README.html})
+~\\
 \section*{Methods}
-
 \subsection*{Implementation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+~\\
 \texttt{pysradb} is implemented in Python and uses
 \texttt{pandas} \cite{mckinney-proc-scipy-2010} for data frame based operations. 
 Since, downloading datasets can often take long time, \texttt{pysradb} displays 
@@ -139,16 +141,22 @@ progress for long haul tasks using \texttt{tqdm}
 \cite{casper_da_costa_luis_2018_1211527}. The metadata information is read in the
 form of a SQLite \cite{about_sqlite} database made available by SRAdb
 \cite{zhu2013sradb}. 
-%\texttt{pysradb} also supports accessing metadata 
-%information from Gene Expression Omnibus (GEO) \cite{edgar2002gene,
-%barrett2012ncbi} through the SQLite database made available through the
-%GEOmetadb project \cite{zhu2008geometadb}.
+~\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \texttt{pysradb} can be run on either Linux or Mac based operating systems. It
 is implemented in Python programming language, has minimal dependencies and can
 be easily installed using either \texttt{pip} or \texttt{conda} based package
 manager via the \texttt{bioconda} \cite{gruning2018bioconda} channel. 
+~\\
+
+Each sub-command of \texttt{pysradb} contains a self-contained help string,
+that describes its purpose and usage example. The help text can be accessed
+by passing the `--help' flag. There is also additional documentation available
+for the sub-commands on the project's website (\url{https://saketkc.github.io/pysradb}).
+We also provide example Jupyter \cite{Kluyver:2016aa} notebooks (\url{https://github.com/saketkc/pysradb/tree/master/notebooks})
+that demonstrate the functionality of the Python API. 
+~\\
 
 \texttt{pysradb}'s development primarily happen on Github
 and the code is tested continuously using Travis CI webhook. This monitors
@@ -157,34 +165,16 @@ happens on Python version 3.5, 3.6, and 3.7 on an Ubuntu 16.04 LTS virtual
 machine while the testing webhooks on the bioconda channel provides
 additional testing on Mac based systems. Nevertheless, \texttt{pysradb} should
 run on most Unix derivatives.
-
-Each sub-command of \texttt{pysradb} contains a self-contained help string,
-that describes its purpose and usage example. The help text can be accessed
-by passing the `--help' flag. There is also additional documentation available
-for the sub-commands on the project's website (https://saketkc.github.io/pysradb).
-We also provide example Jupyter \cite{Kluyver:2016aa} notebooks (https://github.com/saketkc/pysradb/tree/master/notebooks)
-that demonstrate the functionality of the Python API. 
-
-%For software tool papers, this section should address how the tool works and any relevant technical details required for implementation of the tool by other developers.  
-
-%\subsection*{Operation}
-%This part of the methods should include the minimal system requirements needed to run the software and an overview of the workflow for the tool for users of the tool.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
+~\\
 \section*{Use Cases} % Optional - only if NO new datasets are included
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TOO informal
-% thisby
+~\\
 \texttt{pysradb} provides a chain of sub-commands for retrieving metadata, converting
 one accession to other and downloading. Each sub-command is designed to perform
 a single operation by default while additional operations can be performed by passing 
 additional flags. In the following section we demonstrate some of the use cases
 of these sub-commands.
-%The primary use case of \texttt{pysradb} is in automated download of an entire
-%SRA project. 
+~\\
 
 \texttt{pysradb} uses \texttt{SRAmetadb.sqlite}, a SQLite file produced and made available by SRAdb 
 \cite{zhu2013sradb} project. The file itself can be downloaded using
@@ -193,16 +183,15 @@ of these sub-commands.
 \begin{allintypewriter}
 \$ pysradb srametadb\\
 \end{allintypewriter}
-
 \texttt{SRAmetadb.sqlite} file is required for all other operations supported
 by \texttt{pysradb}. This file is required for all the sub-commands to function
 By default, \texttt{pysradb} assumes that by default the file is located in the current
 working directory. Alternatively, it can supplied as `--db path/to/SRAmetadb.sqlite' argument.
 The examples here were run using \texttt{SRAmetadb.sqlite} with schema version 1.0 and 
 creation timestamp	2019-01-25 00:38:19.
-
+~\\
 \subsection*{Search}
-
+~\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Consider a case where a user is looking for Ribo-seq \cite{Ingolia2009} public datasets
 on SRA. These datasets will often have `ribosome profiling' appearing in
@@ -227,13 +216,13 @@ the `search' sub-command:\\
 \end{allintypewriter}
 
 The result here lists down all relevant `ribosome profiling' projects.
-
+~\\
 \subsection*{Getting metadata for a project (SRP)}
-
+~\\
 Each SRA project (SRP) on NCBI's SRA consists of one or multiple 
 experiments (SRX) which are sequenced as one or multiple runs (SRR). Each
 experiment in turn is carried on a biological sample (SRS). 
-
+~\\
 \texttt{pysradb metadata} can be to obtain all the experiment, sample, and run accessions associated
 with a project (SRP) as:\\
 
@@ -271,20 +260,11 @@ study_accession & experiment_accession & sample_accession & run_accession & samp
 SRP010679 & SRX118285 & SRS290854 & SRR403882 & source_name: PC3 human prostate cancer cells || cell line: PC3 || sample type: polyA RNA || treatment: vehicle\\
 SRP010679 & SRX118286 & SRS290855 & SRR403883 & source_name: PC3 human prostate cancer cells || cell line: PC3 || sample type: ribosome protected RNA || treatment: vehicle\\
 SRP010679 & SRX118287 & SRS290856 & SRR403884 & source_name: PC3 human prostate cancer cells || cell line: PC3 || sample type: polyA RNA || treatment: rapamycin\\
-SRP010679 & SRX118288 & SRS290857 & SRR403885 & source_name: PC3 human prostate cancer cells || cell line: PC3 || sample type: ribosome protected RNA || treatment: rapamycin\\
+SRP010679 & SRX118288 & SRS290857 & SRR403885 & source_name: PC3 human prostate cancer cells || cell line: PC3 || sample type: ribosome protected RNA || treatment: rapamycin
     \end{tabular}
 \end{table}
 \end{allintypewriter}
-\begin{comment}
-SRP010679 & SRX118289 & SRS290858 & SRR403886 & source_name: PC3 human prostate cancer cells || cell line: PC3 || sample type: polyA RNA || treatment: PP242\\
-SRP010679 & SRX118289 & SRS290858 & SRR403886 & source_name: PC3 human prostate cancer cells || cell line: PC3 || sample type: polyA RNA || treatment: PP242\\
-SRP010679 & SRX118290 & SRS290859 & SRR403887 & source_name: PC3 human prostate cancer cells || cell line: PC3 || sample type: ribosome protected RNA || treatment: PP242\\
-SRP010679 & SRX118291 & SRS290860 & SRR403888 & source_name: PC3 human prostate cancer cells || cell line: PC3 || sample type: polyA RNA || treatment: vehicle\\
-SRP010679 & SRX118292 & SRS290861 & SRR403889 & source_name: PC3 human prostate cancer cells || cell line: PC3 || sample type: ribosome protected RNA || treatment: vehicle\\
-    %\end{tabular}
-%\end{table}
-%\end{allintypewriter}
-\end{comment}
+
 This can be further expanded to reveal the data in `sample\_attribute' column into
 separate columns via `--expand' flag. This is most useful for samples that have treatment or cell type associated
 metadata available.\\
@@ -306,7 +286,7 @@ SRR403889 & pc3 & ribosome protected rna & pc3 human prostate cancer cells & veh
 SRR403890 & pc3 & polya rna & pc3 human prostate cancer cells & rapamycin\\
 SRR403891 & pc3 & ribosome protected rna & pc3 human prostate cancer cells & rapamycin\\
 SRR403892 & pc3 & polya rna & pc3 human prostate cancer cells & pp242\\
-SRR403893 & pc3 & ribosome protected rna & pc3 human prostate cancer cells & pp242\\
+SRR403893 & pc3 & ribosome protected rna & pc3 human prostate cancer cells & pp242
  \end{tabular}
 \end{table}
 \end{allintypewriter}
@@ -323,19 +303,13 @@ The assay associated with any project can be obtained by providing
         768 & ChIP-Seq\\
         121 & OTHER\\
         353 & RNA-Seq\\
-        28 & WGS\\
+        28 & WGS
     \end{tabular}
 \end{table}
 \end{allintypewriter}
-
-
-%NCBI's  sratoolkit \cite{ncbisratoolit} allows downloading raw data per sequencing run. 
-%However, it's often an an entire experiment (SRX) that is required rather than
-%the individual runs (SRRs). 
-
-
+~\\
 \subsection*{Getting SRPs from GSE}
-
+~\\
 The Gene Expression Omnibus database (GEO) \cite{barrett2012ncbi} is NCBI's data repository
 for functional genomics data that accepts array and sequence-based data from gene
 profiling experiments. For sequence-data, the corresponding raw files are deposited
@@ -370,15 +344,17 @@ GSE100007 & SRP109126 & SRX2916202 & SRS2282394 & GSM2667751 & GSM2667751\\
 GSE100007 & SRP109126 & SRX2916203 & SRS2282395 & GSM2667752 & GSM2667752\\
 GSE100007 & SRP109126 & SRX2916204 & SRS2282396 & GSM2667753 & GSM2667753\\ 
 GSE100007 & SRP109126 & SRX2916205 & SRS2282397 & GSM2667754 & GSM2667754\\
-GSE100007 & SRP109126 & SRX2916206 & SRS2282400 & GSM2667755 & GSM2667755\\
+GSE100007 & SRP109126 & SRX2916206 & SRS2282400 & GSM2667755 & GSM2667755
     \end{tabular}
 \end{table}
 \end{allintypewriter}
-
+~\\
 \subsection*{Getting a list of GEO experiments for a GEO study}
+~\\
 Any GEO study (GSE) will involve a collection of experiments (GSM). We can obtain
 an entire list of experiments corresponding to the study using the
 \texttt{gse-to-gsm} sub-command from \texttt{pysradb}:\\
+
 \begin{allintypewriter}
 \$ pysradb gse-to-gsm GSE41637 | head
 \begin{table}[H]
@@ -392,7 +368,7 @@ an entire list of experiments corresponding to the study using the
         GSE41637  &  GSM1020645_1\\
         GSE41637  &  GSM1020646_1\\
         GSE41637  &  GSM1020647_1\\
-        GSE41637  &  GSM1020648_1\\ 
+        GSE41637  &  GSM1020648_1
     \end{tabular}
 \end{table}
 \end{allintypewriter}
@@ -414,7 +390,7 @@ associated with each experiment. This relevant metadata associated with each sam
         GSE41637 & GSM1020645_1 &  source_name: mouse_lung || strain: DBA/2J || tissue: lung\\
         GSE41637 & GSM1020646_1 &  source_name: mouse_skm || strain: DBA/2J || tissue: skeletal muscle\\
         GSE41637 & GSM1020647_1 &  source_name: mouse_spleen || strain: DBA/2J || tissue: spleen\\
-        GSE41637 & GSM1020648_1 &  source_name: mouse_testes || strain: DBA/2J || tissue: testes\\
+        GSE41637 & GSM1020648_1 &  source_name: mouse_testes || strain: DBA/2J || tissue: testes
     \end{tabular}
 \end{table}
 \end{allintypewriter}
@@ -433,12 +409,13 @@ To obtain more structured metadata, we can use an additional flag `\texttt{--exp
         GSE41637 & GSM1020643_1 &  mouse_kidney & dba/2j & kidney\\
         GSE41637 & GSM1020644_1 &  mouse_liver &  dba/2j & liver\\
         GSE41637 & GSM1020645_1 &  mouse_lung & dba/2j & lung\\
-        GSE41637 & GSM1020646_1 &  mouse_skm & dba/2j & skeletal muscle\\
+        GSE41637 & GSM1020646_1 &  mouse_skm & dba/2j & skeletal muscle
     \end{tabular}
 \end{table}
 \end{allintypewriter}
-
+~\\
 \subsection*{Getting SRR from GSM}
+~\\
 \texttt{gsm-to-srr} allows conversion from GEO experiments (GSM) to
 SRA runs (SRR):\\
 
@@ -448,22 +425,21 @@ SRA runs (SRR):\\
     \begin{tabular}{lll}
 experiment_alias & run_accession\\
 GSM1020640_1 & SRR594393\\
-GSM1020646_1 & SRR594399\\
+GSM1020646_1 & SRR594399
 \end{tabular}
 \end{table}
 \end{allintypewriter}
-
+~\\
 \subsection*{Downloading SRA datasets}
-
+~\\
 \texttt{pysradb} enables seemless downloads from NCBI's SRA. It organizes
 the downloaded data following NCBI's hiererachy: `SRP => SRX => SRR' of storing data.
 Each `SRP' (project) has multiple `SRX' (experiments) and each `SRX' in turn 
 has multiple `SRR' (runs).  Multiple projects can be downloaded at once using
 the \texttt{download} sub-command:\\
 
-
 \begin{allintypewriter}
-\$  pysradb download -p SRP003870 -p SRP005378
+\$  pysradb download -p SRP003870 -p SRP005378\\
 \end{allintypewriter}
 
 \texttt{download} also allows Unix pipes based inputs. Consider our previous
@@ -471,120 +447,46 @@ example of the project SRP000941 with different assays. However, we want to be a
 to download only `RNA-seq' samples. We can do this by subsetting the metadata
 output for only `RNA-seq' samples:\\
 
-
 \begin{allintypewriter}
-\$ pysradb metadata SRP000941 --assay | grep `study|RNA-Seq' | pysradb download
+\$ pysradb metadata SRP000941 --assay | grep `study|RNA-Seq' | pysradb download\\
 \end{allintypewriter}
-
-
-
 This will only download the `RNA-seq' samples from the project.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%The simplest use case of `pysradb` is when you apriopri know the SRA project ID 
-%(SRP) and would simply want to fetch the metadata associated with it. This is
-%generally reflected in the `SraRunTable.txt' that you get from NCBI's website.
-%Example: https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{comment}
-Once you have fetched the metadata and made sure, this is the project you were 
-looking for, you would want to download everything at once. NCBI follows this 
-hiererachy: `SRP => SRX => SRR'. Each `SRP' (project) has multiple `SRX` 
-(experiments) and each `SRX' in turn has multiple `SRR` (runs) inside it.
-We want to mimick this hiereachy in our downloads. The reason to do that is simple:
-in most cases you care about `SRX' the most, and would want to "merge" your SRRs
-in one way or the other. Having this hierearchy ensures your downstream code
-can handle such cases easily, without worrying about which runs (SRR) need to
-be merged.
-
-
-\begin{allintypewriter}
-\$ pysradb download -p SRP063852 
-\end{allintypewriter}
-
-Often, you need to process only a smaller set of samples from a project (SRP).
-Consider the project SRP000941 which has data spanning four assays. But, we might be 
-only interested in analyzing the `RNA-seq' samples and would just want to download
-that subset. This can be done simply using the following command:
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{allintypewriter}
-\$ pysradb metadata SRP000941 --assay $|$ grep `study$|$RNA-Seq' $|$ pysradb download
-\end{allintypewriter}
-
-\end{comment}
-
-
-\begin{comment}
-
-\section*{Discussion} % Optional - only if novel data or analyses are included
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-This section is only required if the paper includes novel data or analyses, and 
-should be written in the same style as a traditional discussion section. Please 
-include a brief discussion of allowances made (if any) for controlling bias or unwanted sources of variability, and the limitations of any novel datasets.
-
-
-\section*{Conclusions} % Optional - only if novel data or analyses are included
-This section is only required if the paper includes novel data or analyses, and should be written as a traditional conclusion.
-\end{comment}
-
+~\\
 \section*{Summary} % Optional - only if NO new datasets are included
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-%The need to perform metaanalysis warrants need of more stream lined ways to obtain
-%data. NCBI provides access to a huge set of datasets across 
+~\\
 \texttt{pysradb} provides a command-line interface to query metadata and download
 sequencing datasets from NCBI's SRA. It enables seamless retrieval of metadata
 and conversion between different accessions. \texttt{pysradb} is written in Python 3
 and is available on Linux and Mac OS. The source code is hosted on Github and licensed
 under BSD 3-clause license. It is available for installation through PyPI and bioconda.
-
-
-\begin{comment}
-
-
-\section*{Data availability} % Optional - only if novel data or analyses are included
-Please add details of where any datasets that are mentioned in the paper, and that have not have not previously been formally published, can be found.  If previously published datasets are mentioned, these should be cited in the references, as per usual scholarly conventions.
-\end{comment}
-
+~\\
 \section*{Software availability}
-Software and source code available from: https://github.com/saketkc/pysradb
-
-Documentation available at: https://saketkc.github.io/pysradb
-
-Archived source code at time of publication: https://doi.org/10.5281/zenodo.2579446
-
+~\\
+Software and source code available from: \url{https://github.com/saketkc/pysradb}
+~\\
+Documentation available at: \url{https://saketkc.github.io/pysradb}
+~\\
+Archived source code at time of publication: \url{https://doi.org/10.5281/zenodo.2579446}
+~\\
 Software license: BSD 3-Clause
-
+~\\
 \section*{Author Contributions}
+~\\
 S.C. designed the project, implemented the package, and wrote the manuscript.
-
+~\\
 \section*{Competing interests}
+~\\
 No competing interests were disclosed.
-
+~\\
 \section*{Grant information}
+~\\
 The author declared that no grants were involved in supporting this work.
-
+~\\
 \section*{Acknowledgments}
-The author thanks Meng Zhou, Rishvanth Prabakar, and Amal Thomas at the University Of Southern California
-and Shweta Ramdas at the University of Pennsylvania for helpful discussions and comments
-on the software and manuscript. The author acknowledges support from USC Provost Graduate Research Fellowship. 
+~\\
+The author thanks Amal Thomas, Meng Zhou, Rishvanth Prabakar, Wenzheng Li, and Xiaojing Ji at the University of Southern California (USC) and Shweta Ramdas at the University of Pennsylvania for helpful discussions and comments on the software and manuscript. The author acknowledges support from the USC Provost Graduate Research Fellowship. 
 
-\begin{comment}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-This section should acknowledge anyone who contributed to the research or the
-article but who does not qualify as an author based on the criteria provided earlier
-(e.g. someone or an organization that provided writing assistance). Please state how
-they contributed; authors should obtain permission to acknowledge from all those
-mentioned in the Acknowledgments section.
 
-Please do not list grant funding in this section.
-\end{comment}
 
 {\small\bibliographystyle{unsrtnat}
 \bibliography{bibliography}}
